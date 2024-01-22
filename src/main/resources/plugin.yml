@@ -1,0 +1,7 @@
+name: VampireZ
+version: '${project.version}'
+main: com.tqqn.minigames.VampireZ
+api-version: '1.20'
+load: STARTUP
+authors: [Tqqn]
+description: VampiresZ Plugin - remake of the Hypixel VampireZ
