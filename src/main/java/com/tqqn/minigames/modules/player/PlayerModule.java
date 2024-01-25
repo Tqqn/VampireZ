@@ -3,32 +3,33 @@ package com.tqqn.minigames.modules.player;
 import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
+import com.tqqn.minigames.modules.database.DatabaseModule;
+import com.tqqn.minigames.utils.MessageUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class PlayerModule extends AbstractModule {
 
     @Getter private final List<PlayerModel> players = new ArrayList<>();
+    private final DatabaseModule databaseModule;
 
     public PlayerModule(VampireZ plugin) {
         super(plugin, Arrays.asList(
 
         ));
+        this.databaseModule = (DatabaseModule) getPlugin().getModuleManager().getModule(DatabaseModule.class);
     }
 
     @Override
-    protected void onEnable() {
+    public void onEnable() {
 
     }
 
     @Override
-    protected void onDisable() {
+    public void onDisable() {
 
     }
 
@@ -38,12 +39,11 @@ public class PlayerModule extends AbstractModule {
 
     public void processLogin(Player player) {
         player.getInventory().clear();
-        player.teleport(player.getLocation()); // TODO: lobby location
+        player.teleport(databaseModule.getDefaultConfig().getSpawn("lobby"));
 
         PlayerModel playerModel = new PlayerModel(player.getUniqueId(), player.getName());
         this.players.add(playerModel);
 
-        Bukkit.getOnlinePlayers().forEach(players -> players.sendMessage("")); // TODO: JoinMessage
-
+        Bukkit.getOnlinePlayers().forEach(players -> players.sendMessage(MessageUtil.PLAYER_JOIN.getMessage("<red>", player.getName(), "1", "1")));
     }
 }

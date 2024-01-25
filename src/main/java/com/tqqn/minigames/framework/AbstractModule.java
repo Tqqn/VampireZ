@@ -17,8 +17,8 @@ public abstract class AbstractModule {
         this.plugin = plugin;
         this.listeners = listeners;
     }
-    protected abstract void onEnable();
-    protected abstract void onDisable();
+    public abstract void onEnable();
+    public abstract void onDisable();
 
     protected void registerListeners() {
         if (listeners.isEmpty()) return;

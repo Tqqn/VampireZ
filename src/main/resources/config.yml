@@ -1,0 +1,23 @@
+setup-mode: true
+spawns:
+  lobby:
+    world: "world"
+    x: 0
+    y: 100
+    z: 0
+    yaw: 150
+    pitch: 150
+  vampires:
+    world: "world"
+    x: 0
+    y: 100
+    z: 0
+    yaw: 150
+    pitch: 150
+  survivors:
+    world: "world"
+    x: 0
+    y: 100
+    z: 0
+    yaw: 150
+    pitch: 150

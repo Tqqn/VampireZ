@@ -2,10 +2,8 @@ package com.tqqn.minigames.modules.game;
 
 import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
-import org.bukkit.event.Listener;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 public class GameModule extends AbstractModule {
     public GameModule(VampireZ plugin) {
@@ -13,12 +11,12 @@ public class GameModule extends AbstractModule {
     }
 
     @Override
-    protected void onEnable() {
+    public void onEnable() {
 
     }
 
     @Override
-    protected void onDisable() {
+    public void onDisable() {
 
     }
 }
