@@ -19,18 +19,18 @@ public class PlayerModule extends AbstractModule {
     public PlayerModule(VampireZ plugin) {
         super(plugin, Arrays.asList(
 
-        ));
+        ), "Player");
         this.databaseModule = (DatabaseModule) getPlugin().getModuleManager().getModule(DatabaseModule.class);
     }
 
     @Override
     public void onEnable() {
-
+        init();
     }
 
     @Override
     public void onDisable() {
-
+        disable();
     }
 
     public PlayerModel getPlayerModel(UUID uuid) {
@@ -39,6 +39,7 @@ public class PlayerModule extends AbstractModule {
 
     public void processLogin(Player player) {
         player.getInventory().clear();
+
         player.teleport(databaseModule.getDefaultConfig().getSpawn("lobby"));
 
         PlayerModel playerModel = new PlayerModel(player.getUniqueId(), player.getName());
