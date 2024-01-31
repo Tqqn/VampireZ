@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 public class DatabaseModule extends AbstractModule {
 
     private static DefaultConfig defaultConfig;
-    private Map<String, AbstractConfig> loadedCustomConfigs;
+    private final Map<String, AbstractConfig> loadedCustomConfigs;
 
     public DatabaseModule(VampireZ plugin) {
         super(plugin, Arrays.asList(
@@ -39,9 +39,10 @@ public class DatabaseModule extends AbstractModule {
         disable();
     }
 
-
-    public static CompletableFuture savePlayer(PlayerModel playerModel) {
-        return CompletableFuture.runAsync(() -> playerModel.getUuid());
+    public CompletableFuture savePlayer(PlayerModel playerModel) {
+        return CompletableFuture.runAsync(() -> {
+            loadedCustomConfigs.get("player.yml")
+        }); //PLACEHOLDER
     }
 
     public DefaultConfig getDefaultConfig() {
