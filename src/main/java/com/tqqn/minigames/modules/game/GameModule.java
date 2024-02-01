@@ -18,7 +18,7 @@ public class GameModule extends AbstractModule {
     private static GameStates gameState;
     private final Collection<AbstractGameState> loadedGameState;
     public GameModule(VampireZ plugin) {
-        super(plugin, Arrays.asList(), "Game");
+        super(plugin, "Game");
         gameState = GameStates.LOBBY;
         loadedGameState = new ArrayList<>();
     }
@@ -54,14 +54,11 @@ public class GameModule extends AbstractModule {
 
                 loadedGameState.add(activeState);
             }
-
             case END -> {
                 GameModule.gameState = GameStates.END;
 
             }
         }
-
-
     }
 
 }

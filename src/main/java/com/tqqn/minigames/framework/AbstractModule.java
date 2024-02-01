@@ -2,6 +2,7 @@ package com.tqqn.minigames.framework;
 
 import com.tqqn.minigames.VampireZ;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -13,11 +14,11 @@ import java.util.Collection;
 public abstract class AbstractModule {
 
     private final VampireZ plugin;
-    private final Collection<Listener> listeners;
+
+    @Setter private Collection<Listener> listeners;
     private final String name;
-    public AbstractModule(VampireZ plugin, Collection<Listener> listeners, String name) {
+    public AbstractModule(VampireZ plugin, String name) {
         this.plugin = plugin;
-        this.listeners = listeners;
         this.name = name;
     }
     public abstract void onEnable();
