@@ -18,6 +18,6 @@ private ModuleManager moduleManager;
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        moduleManager.disable();
     }
 }

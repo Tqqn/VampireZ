@@ -8,7 +8,9 @@ import com.tqqn.minigames.framework.database.listeners.PlayerJoinListener;
 import com.tqqn.minigames.framework.database.listeners.PlayerQuitListener;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.modules.database.configs.PlayerConfig;
+import com.tqqn.minigames.modules.player.PlayerModule;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,6 +43,12 @@ public class DatabaseModule extends AbstractModule {
 
     @Override
     public void onDisable() {
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            Bukkit.getLogger().info("Saving player: " + player.getName() + "!");
+            savePlayer(PlayerModule.getPlayerModel(player.getUniqueId()));
+            player.kick();
+            Bukkit.getLogger().info("Finished saving player: " + player.getName() + "! Kicked player!");
+        });
         disable();
     }
 
@@ -51,9 +59,9 @@ public class DatabaseModule extends AbstractModule {
         });
     }
 
-    public CompletableFuture<PlayerModel> loadPlayer(UUID uuid) {
+    public CompletableFuture<PlayerModel> loadPlayer(UUID uuid, String name) {
         PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("player.yml");
-        return CompletableFuture.supplyAsync(() -> new PlayerModel(uuid, "PLACEHOLDER", playerConfig.getStats(uuid)));
+        return CompletableFuture.supplyAsync(() -> new PlayerModel(uuid, name, playerConfig.getStats(uuid)));
     }
 
     public DefaultConfig getDefaultConfig() {

@@ -7,15 +7,18 @@ import com.tqqn.minigames.framework.game.GameStates;
 import com.tqqn.minigames.modules.game.states.active.ActiveState;
 import com.tqqn.minigames.modules.game.states.lobby.LobbyState;
 import lombok.Getter;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameModule extends AbstractModule {
 
-    @Getter
-    private static GameStates gameState;
+    @Getter private static GameStates gameState;
+    @Getter private static GameRounds currentRound;
     private final Collection<AbstractGameState> loadedGameState;
     public GameModule(VampireZ plugin) {
         super(plugin, "Game");
@@ -53,6 +56,7 @@ public class GameModule extends AbstractModule {
                 activeState.onEnable();
 
                 loadedGameState.add(activeState);
+                currentRound = GameRounds.ONE;
             }
             case END -> {
                 GameModule.gameState = GameStates.END;
@@ -61,4 +65,44 @@ public class GameModule extends AbstractModule {
         }
     }
 
+    public void setCurrentRound(GameRounds gameRounds) {
+        GameModule.currentRound = gameRounds;
+    }
+
+    public void spawnLightningRandom(Location center, int howManyTimes) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        center.add((random.nextBoolean() ? 1: -1) * random.nextInt(10),
+                (random.nextBoolean() ? 1: -1) * random.nextInt(10),
+                (random.nextBoolean() ? 1: -1) * random.nextInt(10));
+        center.setY(center.getWorld().getHighestBlockYAt(center));
+
+        for (int i = 1; i < howManyTimes; i++) {
+            center.getWorld().strikeLightning(center);
+        }
+    }
+
+    @Getter
+    public enum GameRounds {
+        ONE("I"),
+        TWO("II"),
+        THREE("III"),
+        FOUR("IV"),
+        FIVE("V"),
+        SIX("VI"),
+        SEVEN("VII"),
+        EIGHT("VIII"),
+        NINE("IX"),
+        TEN("X"),
+        FINAL("Final");
+
+        private final String prettyName;
+        GameRounds(String prettyName) {
+            this.prettyName = prettyName;
+        }
+
+        public GameRounds getNext() {
+            if (ordinal() == values().length -1) return null;
+            return values()[ordinal() +1];
+        }
+    }
 }

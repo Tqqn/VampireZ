@@ -15,6 +15,10 @@ public class GamePlayerJoinEvent extends Event implements Cancellable {
 
     private boolean cancelled = false;
 
+    /**
+     * Use GamePlayerJoinEvent and not the spigot/bukkit one, as of this way we can guarantee that a plugin player object is existing/made.
+     * @param playerModel custom player object
+     */
     public GamePlayerJoinEvent(PlayerModel playerModel) {
         super(true);
         this.player = playerModel;
