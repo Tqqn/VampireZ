@@ -5,6 +5,7 @@ import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.framework.database.models.PlayerStats;
 import com.tqqn.minigames.modules.database.DatabaseModule;
+import com.tqqn.minigames.modules.database.configs.PlayerConfig;
 import com.tqqn.minigames.utils.MessageUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -37,6 +38,11 @@ public class PlayerModule extends AbstractModule {
 
     public static PlayerModel getPlayerModel(UUID uuid) {
         return CACHED_PLAYERS.stream().filter(playerModel -> playerModel.getUuid().equals(uuid)).findFirst().orElse(null);
+    }
+
+    public void processFirstLogin(Player player) {
+        PlayerConfig playerConfig = (PlayerConfig) databaseModule.getLoadedCustomConfigs().get("player.yml");
+        playerConfig.createPlayerTemplate(player.getUniqueId(), player.getName());
     }
 
     public boolean processLogin(Player player) {

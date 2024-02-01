@@ -12,16 +12,29 @@ public class PlayerConfig extends AbstractConfig {
         super(databaseModule, configName);
     }
 
+    public void createPlayerTemplate(UUID uuid, String name) {
+        getCustomConfig().createSection(String.valueOf(uuid));
+        saveValueToConfig(uuid + ".name", name);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_KILLS, 0);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_WINS, 0);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_LOSSES, 0);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_DEATHS, 0);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_KILLS, 0);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_WINS, 0);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_LOSSES, 0);
+        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_DEATHS, 0);
+    }
+
     public PlayerStats getStats(UUID uuid) {
         return new PlayerStats(
-                getCustomConfig().getInt(uuid + ".stats.human_kills"),
-                getCustomConfig().getInt(uuid + ".stats.human_wins"),
-                getCustomConfig().getInt(uuid + ".stats.human_losses"),
-                getCustomConfig().getInt(uuid + ".stats.human_deaths"),
-                getCustomConfig().getInt(uuid + ".stats.vampire_kills"),
-                getCustomConfig().getInt(uuid + ".stats.vampire_wins"),
-                getCustomConfig().getInt(uuid + ".stats.vampire_losses"),
-                getCustomConfig().getInt(uuid + ".stats.vampire_deaths"));
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.HUMAN_KILLS.getConfigPath()),
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.HUMAN_WINS.getConfigPath()),
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.HUMAN_LOSSES.getConfigPath()),
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.HUMAN_DEATHS.getConfigPath()),
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_KILLS.getConfigPath()),
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_WINS.getConfigPath()),
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_LOSSES.getConfigPath()),
+                getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_DEATHS.getConfigPath()));
     }
 
     public void savePlayer(PlayerModel playerModel) {

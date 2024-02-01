@@ -1,5 +1,7 @@
 package com.tqqn.minigames.framework.database.models;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 
 public class PlayerStats {
@@ -26,15 +28,23 @@ public class PlayerStats {
     public void increaseStat(StatType statType) {
         stats.put(statType, stats.get(statType)+1);
     }
-    public enum StatType {
-        HUMAN_KILLS,
-        HUMAN_WINS,
-        HUMAN_LOSSES,
-        HUMAN_DEATHS,
 
-        VAMPIRE_KILLS,
-        VAMPIRE_WINS,
-        VAMPIRE_LOSSES,
-        VAMPIRE_DEATHS;
+    @Getter
+    public enum StatType {
+        HUMAN_KILLS(".stats.human_kills"),
+        HUMAN_WINS(".stats.human_wins"),
+        HUMAN_LOSSES(".stats.human_losses"),
+        HUMAN_DEATHS(".stats.human_deaths"),
+
+        VAMPIRE_KILLS(".stats.vampire_kills"),
+        VAMPIRE_WINS(".stats.vampire_wins"),
+        VAMPIRE_LOSSES(".stats.vampire_losses"),
+        VAMPIRE_DEATHS(".stats.vampire_deaths");
+
+        private final String configPath;
+
+        StatType(String path) {
+            this.configPath = path;
+        }
     }
 }

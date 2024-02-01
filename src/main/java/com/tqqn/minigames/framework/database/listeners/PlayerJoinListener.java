@@ -30,6 +30,9 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        if (PlayerModule.getPlayerModel(event.getPlayer().getUniqueId()) == null) {
+            playerModule.processFirstLogin(event.getPlayer());
+        }
         Bukkit.getPluginManager().callEvent(new GamePlayerJoinEvent(PlayerModule.getPlayerModel(event.getPlayer().getUniqueId())));
     }
 }
