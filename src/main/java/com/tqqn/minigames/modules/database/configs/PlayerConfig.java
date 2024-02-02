@@ -13,16 +13,16 @@ public class PlayerConfig extends AbstractConfig {
     }
 
     public void createPlayerTemplate(UUID uuid, String name) {
-        getCustomConfig().createSection(String.valueOf(uuid));
         saveValueToConfig(uuid + ".name", name);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_KILLS, 0);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_WINS, 0);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_LOSSES, 0);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.HUMAN_DEATHS, 0);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_KILLS, 0);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_WINS, 0);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_LOSSES, 0);
-        saveValueToConfig(uuid + "" + PlayerStats.StatType.VAMPIRE_DEATHS, 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.HUMAN_KILLS.getConfigPath(), 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.HUMAN_WINS.getConfigPath(), 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.HUMAN_LOSSES.getConfigPath(), 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.HUMAN_DEATHS.getConfigPath(), 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.VAMPIRE_KILLS.getConfigPath(), 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.VAMPIRE_WINS.getConfigPath(), 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.VAMPIRE_LOSSES.getConfigPath(), 0);
+        saveValueToConfig(uuid + PlayerStats.StatType.VAMPIRE_DEATHS.getConfigPath(), 0);
+        saveCustomConfig();
     }
 
     public PlayerStats getStats(UUID uuid) {
@@ -35,9 +35,11 @@ public class PlayerConfig extends AbstractConfig {
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_WINS.getConfigPath()),
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_LOSSES.getConfigPath()),
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_DEATHS.getConfigPath()));
+
     }
 
     public void savePlayer(PlayerModel playerModel) {
         saveValueToConfig(playerModel.getUuid() + ".name", playerModel.getName());
+        saveCustomConfig();
     }
 }

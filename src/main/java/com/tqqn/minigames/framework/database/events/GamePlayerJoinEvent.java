@@ -20,7 +20,6 @@ public class GamePlayerJoinEvent extends Event implements Cancellable {
      * @param playerModel custom player object
      */
     public GamePlayerJoinEvent(PlayerModel playerModel) {
-        super(true);
         this.player = playerModel;
     }
 

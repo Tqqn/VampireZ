@@ -43,9 +43,9 @@ public abstract class AbstractConfig {
         }
     }
 
-    public void saveCustomConfig(FileConfiguration fileConfiguration) {
+    public void saveCustomConfig() {
         try {
-            fileConfiguration.save(customConfigFile);
+            customConfig.save(customConfigFile);
         } catch (IOException ignored) {}
     }
 

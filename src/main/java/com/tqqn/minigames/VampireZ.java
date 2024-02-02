@@ -7,14 +7,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public final class VampireZ extends JavaPlugin {
 
-private ModuleManager moduleManager;
+    private ModuleManager moduleManager;
 
     @Override
     public void onLoad() {
         moduleManager = new ModuleManager(this);
     }
     @Override
-    public void onEnable() {}
+    public void onEnable() {
+        moduleManager.init();
+    }
 
     @Override
     public void onDisable() {

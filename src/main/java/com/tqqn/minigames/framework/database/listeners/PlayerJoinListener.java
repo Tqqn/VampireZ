@@ -21,18 +21,13 @@ public class PlayerJoinListener implements Listener {
     }
 
     @EventHandler
-    public void preLogin(PlayerLoginEvent event) {
-        if (!playerModule.processLogin(event.getPlayer())) {
-            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
-            event.setKickMessage("You do not exist.");
-        }
-    }
-
-    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (PlayerModule.getPlayerModel(event.getPlayer().getUniqueId()) == null) {
-            playerModule.processFirstLogin(event.getPlayer());
-        }
+        event.setJoinMessage("");
+
+        Bukkit.getLogger().info(String.valueOf(PlayerModule.getPlayerModel(event.getPlayer().getUniqueId())));
+
+        playerModule.processLogin(event.getPlayer());
+
         Bukkit.getPluginManager().callEvent(new GamePlayerJoinEvent(PlayerModule.getPlayerModel(event.getPlayer().getUniqueId())));
     }
 }

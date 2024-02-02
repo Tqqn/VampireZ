@@ -7,7 +7,6 @@ import com.tqqn.minigames.framework.database.models.PlayerStats;
 import com.tqqn.minigames.modules.database.DatabaseModule;
 import com.tqqn.minigames.modules.database.configs.PlayerConfig;
 import com.tqqn.minigames.utils.MessageUtil;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -41,23 +40,33 @@ public class PlayerModule extends AbstractModule {
     }
 
     public void processFirstLogin(Player player) {
-        PlayerConfig playerConfig = (PlayerConfig) databaseModule.getLoadedCustomConfigs().get("player.yml");
+        PlayerConfig playerConfig = (PlayerConfig) databaseModule.getLoadedCustomConfigs().get("players.yml");
         playerConfig.createPlayerTemplate(player.getUniqueId(), player.getName());
     }
 
-    public boolean processLogin(Player player) {
-        player.getInventory().clear();
+    public void processLogin(Player player) {
+        try {
+            if (!databaseModule.doesPlayerExist(player.getUniqueId()).get()) {
+                processFirstLogin(player);
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Bukkit.getLogger().info("Something went wrong getting the playerdata of " + player.getName());
+            player.kickPlayer("Something went wrong getting your playerdata! Try it again later.");
+        }
 
-        player.teleport(databaseModule.getDefaultConfig().getSpawn("lobby"));
         PlayerModel playerModel;
 
         try {
             playerModel = databaseModule.loadPlayer(player.getUniqueId(), player.getName()).get();
         } catch (Exception ignored) {
-            return false;
+            return;
         }
 
         CACHED_PLAYERS.add(playerModel);
+
+        player.getInventory().clear();
+
+        player.teleport(databaseModule.getDefaultConfig().getSpawn("lobby"));
 
         Bukkit.getLogger().info(playerModel.getName());
         Bukkit.getLogger().info(String.valueOf(playerModel.getStats().getStat(PlayerStats.StatType.HUMAN_KILLS)));
@@ -67,7 +76,6 @@ public class PlayerModule extends AbstractModule {
         Bukkit.getLogger().info(String.valueOf(playerModel.getStats().getStat(PlayerStats.StatType.VAMPIRE_LOSSES)));
 
         Bukkit.getOnlinePlayers().forEach(players -> players.sendMessage(MessageUtil.PLAYER_JOIN.getMessage("<red>", player.getName(), "1", "1")));
-        return true;
     }
 
     public void setSpectator(PlayerModel playerModel) {

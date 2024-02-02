@@ -27,17 +27,16 @@ public class DatabaseModule extends AbstractModule {
     public DatabaseModule(VampireZ plugin) {
         super(plugin, "Database");
 
-        setListeners(Arrays.asList(
-                new PlayerJoinListener(this),
-                new PlayerQuitListener(this)));
-
         defaultConfig = new DefaultConfig(this);
         loadedCustomConfigs = new HashMap<>();
-        loadedCustomConfigs.put("player.yml", new PlayerConfig(this, "player.yml"));
+        loadedCustomConfigs.put("players.yml", new PlayerConfig(this, "players.yml"));
     }
 
     @Override
     public void onEnable() {
+        setListeners(Arrays.asList(
+                new PlayerJoinListener(this),
+                new PlayerQuitListener(this)));
         init();
     }
 
@@ -54,14 +53,19 @@ public class DatabaseModule extends AbstractModule {
 
     public void savePlayer(PlayerModel playerModel) {
         CompletableFuture.runAsync(() -> {
-            PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("player.yml");
+            PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
             playerConfig.savePlayer(playerModel);
         });
     }
 
     public CompletableFuture<PlayerModel> loadPlayer(UUID uuid, String name) {
-        PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("player.yml");
+        PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
         return CompletableFuture.supplyAsync(() -> new PlayerModel(uuid, name, playerConfig.getStats(uuid)));
+    }
+
+    public CompletableFuture<Boolean> doesPlayerExist(UUID uuid) {
+        PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
+        return CompletableFuture.supplyAsync(() -> playerConfig.getCustomConfig().contains(String.valueOf(uuid)));
     }
 
     public DefaultConfig getDefaultConfig() {

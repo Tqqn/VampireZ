@@ -37,7 +37,7 @@ public abstract class AbstractModule {
     }
 
     private void registerListeners() {
-        if (listeners.isEmpty()) return;
+        if (listeners == null || listeners.isEmpty()) return;
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         listeners.forEach(listener -> {
             pluginManager.registerEvents(listener, plugin);
@@ -46,7 +46,7 @@ public abstract class AbstractModule {
     }
 
     private void unRegisterListeners() {
-        if (listeners.isEmpty()) return;
+        if (listeners == null || listeners.isEmpty()) return;
         listeners.forEach(listener -> {
             HandlerList.unregisterAll(listener);
             Bukkit.getLogger().info("Module: " + name + " has unregistered listener: " + listener);
