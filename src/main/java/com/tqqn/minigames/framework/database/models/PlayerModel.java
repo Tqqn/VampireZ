@@ -1,7 +1,10 @@
 package com.tqqn.minigames.framework.database.models;
 
+import com.tqqn.minigames.framework.team.AbstractTeam;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -12,6 +15,7 @@ public class PlayerModel {
     private final String name;
     private final PlayerStats stats;
 
+    @Setter private AbstractTeam currentTeam = null;
     @Setter private boolean spectator;
 
     public PlayerModel(UUID uuid, String name, PlayerStats stats) {
@@ -19,5 +23,13 @@ public class PlayerModel {
         this.name = name;
         this.stats = stats;
         this.spectator = false;
+    }
+
+    public Player getPlayer() {
+        try {
+            return Bukkit.getPlayer(uuid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

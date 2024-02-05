@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class LobbyState extends AbstractGameState {
     public LobbyState(GameModule gameModule) {
-        super(gameModule, Arrays.asList(), "Lobby");
+        super(gameModule, "Lobby");
     }
 
     @Override

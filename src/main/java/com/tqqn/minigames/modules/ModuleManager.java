@@ -4,7 +4,9 @@ import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.modules.database.DatabaseModule;
 import com.tqqn.minigames.modules.game.GameModule;
+import com.tqqn.minigames.modules.menu.MenuModule;
 import com.tqqn.minigames.modules.player.PlayerModule;
+import com.tqqn.minigames.modules.team.TeamModule;
 
 import java.util.LinkedHashMap;
 
@@ -21,7 +23,9 @@ public class ModuleManager {
     public void init() {
         modules.put(DatabaseModule.class, new DatabaseModule(plugin));
         modules.put(PlayerModule.class, new PlayerModule(plugin));
+        modules.put(TeamModule.class, new TeamModule(plugin));
         modules.put(GameModule.class, new GameModule(plugin));
+        modules.put(MenuModule.class, new MenuModule(plugin));
 
         registerModules();
     }

@@ -7,13 +7,13 @@ import org.bukkit.event.Listener;
 import java.util.Collection;
 
 public class EndState extends AbstractGameState {
-    public EndState(GameModule gameModule, Collection<Listener> listeners, String name) {
-        super(gameModule, listeners, name);
+    public EndState(GameModule gameModule) {
+        super(gameModule, "End");
     }
 
     @Override
     public void onEnable() {
-
+        init();
     }
 
     @Override

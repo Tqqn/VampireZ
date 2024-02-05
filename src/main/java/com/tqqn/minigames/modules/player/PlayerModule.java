@@ -68,13 +68,6 @@ public class PlayerModule extends AbstractModule {
 
         player.teleport(databaseModule.getDefaultConfig().getSpawn("lobby"));
 
-        Bukkit.getLogger().info(playerModel.getName());
-        Bukkit.getLogger().info(String.valueOf(playerModel.getStats().getStat(PlayerStats.StatType.HUMAN_KILLS)));
-        Bukkit.getLogger().info(String.valueOf(playerModel.getStats().getStat(PlayerStats.StatType.HUMAN_DEATHS)));
-        Bukkit.getLogger().info(String.valueOf(playerModel.getStats().getStat(PlayerStats.StatType.HUMAN_WINS)));
-        Bukkit.getLogger().info(String.valueOf(playerModel.getStats().getStat(PlayerStats.StatType.VAMPIRE_KILLS)));
-        Bukkit.getLogger().info(String.valueOf(playerModel.getStats().getStat(PlayerStats.StatType.VAMPIRE_LOSSES)));
-
         Bukkit.getOnlinePlayers().forEach(players -> players.sendMessage(MessageUtil.PLAYER_JOIN.getMessage("<red>", player.getName(), "1", "1")));
     }
 

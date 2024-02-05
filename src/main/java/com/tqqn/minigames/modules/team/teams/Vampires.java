@@ -11,6 +11,5 @@ public class Vampires extends AbstractTeam {
 
     @Override
     public void giveKit(PlayerModel playerModel) {
-
     }
 }

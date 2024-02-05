@@ -4,11 +4,13 @@ import com.tqqn.minigames.VampireZ;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Collection;
+import java.util.Map;
 
 @Getter
 public abstract class AbstractModule {
@@ -16,6 +18,7 @@ public abstract class AbstractModule {
     private final VampireZ plugin;
 
     @Setter private Collection<Listener> listeners;
+    @Setter private Map<String, CommandExecutor> commands;
     private final String name;
     public AbstractModule(VampireZ plugin, String name) {
         this.plugin = plugin;
@@ -25,15 +28,24 @@ public abstract class AbstractModule {
     public abstract void onDisable();
 
     protected void init() {
-        Bukkit.getLogger().info("Module: " + name + " is loading...");
+        Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " is loading...");
         registerListeners();
-        Bukkit.getLogger().info("Module: " + name + " finished loading!");
+        registerCommands();
+        Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " finished loading!");
     }
 
     protected void disable() {
-        Bukkit.getLogger().info("Module: " + name + " is disabling...");
+        Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " is disabling...");
         unRegisterListeners();
-        Bukkit.getLogger().info("Module: " + name + " finished disabling!");
+        Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " finished disabling!");
+    }
+
+    private void registerCommands() {
+        if (commands == null || commands.isEmpty()) return;
+        commands.forEach((commandString, command) -> {
+            plugin.getCommand(commandString).setExecutor(command);
+            Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " has registered command: " + commandString);
+        });
     }
 
     private void registerListeners() {
@@ -41,7 +53,7 @@ public abstract class AbstractModule {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         listeners.forEach(listener -> {
             pluginManager.registerEvents(listener, plugin);
-            Bukkit.getLogger().info("Module: " + name + " has registered listener: " + listener);
+            Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " has registered listener: " + listener);
         });
     }
 
@@ -49,7 +61,7 @@ public abstract class AbstractModule {
         if (listeners == null || listeners.isEmpty()) return;
         listeners.forEach(listener -> {
             HandlerList.unregisterAll(listener);
-            Bukkit.getLogger().info("Module: " + name + " has unregistered listener: " + listener);
+            Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " has unregistered listener: " + listener);
         });
     }
 }

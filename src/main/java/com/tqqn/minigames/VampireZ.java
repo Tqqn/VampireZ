@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class VampireZ extends JavaPlugin {
 
     private ModuleManager moduleManager;
+    private final String prefix = "[VampireZ] ";
 
     @Override
     public void onLoad() {

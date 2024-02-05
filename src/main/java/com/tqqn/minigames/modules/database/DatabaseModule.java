@@ -46,7 +46,7 @@ public class DatabaseModule extends AbstractModule {
             Bukkit.getLogger().info("Saving player: " + player.getName() + "!");
             savePlayer(PlayerModule.getPlayerModel(player.getUniqueId()));
             player.kick();
-            Bukkit.getLogger().info("Finished saving player: " + player.getName() + "! Kicked player!");
+            Bukkit.getLogger().info("Finished saving player: " + player.getName() + ". Kicked player from the server.");
         });
         disable();
     }

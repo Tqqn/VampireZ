@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public abstract class AbstractTeam {
 
     private final List<PlayerModel> teamPlayers = Collections.synchronizedList(new ArrayList<>());
 
-    @Getter private final String name;
-    @Getter private final String teamColor;
-    @Getter private final String teamPrefix;
+    private final String name;
+    private final String teamColor;
+    private final String teamPrefix;
 
     public AbstractTeam(String name, String teamColor, String teamPrefix) {
         this.name = name;
@@ -28,11 +29,13 @@ public abstract class AbstractTeam {
     public void addPlayerToTeam(PlayerModel playerModel) {
         if (isPlayerInTeam(playerModel)) return;
         teamPlayers.add(playerModel);
+        playerModel.setCurrentTeam(this);
     }
 
     public void removePlayerFromTeam(PlayerModel playerModel) {
         if (!isPlayerInTeam(playerModel)) return;
         teamPlayers.remove(playerModel);
+        playerModel.setCurrentTeam(null);
     }
 
     public int getTeamSize() {

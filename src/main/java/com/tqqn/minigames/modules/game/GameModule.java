@@ -4,15 +4,19 @@ import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.framework.game.AbstractGameState;
 import com.tqqn.minigames.framework.game.GameStates;
+import com.tqqn.minigames.framework.game.listeners.PlayerChatListener;
+import com.tqqn.minigames.framework.team.listeners.PlayerDeathListener;
+import com.tqqn.minigames.modules.game.commands.AdminStartCommand;
 import com.tqqn.minigames.modules.game.states.active.ActiveState;
 import com.tqqn.minigames.modules.game.states.lobby.LobbyState;
+import com.tqqn.minigames.modules.team.TeamModule;
 import lombok.Getter;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.NoSuchElementException;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameModule extends AbstractModule {
@@ -28,6 +32,8 @@ public class GameModule extends AbstractModule {
 
     @Override
     public void onEnable() {
+        setListeners(Arrays.asList(new PlayerChatListener()));
+        setCommands(Map.of("adminstart", new AdminStartCommand(this)));
         init();
 
         LobbyState lobbyState = new LobbyState(this);
@@ -44,10 +50,8 @@ public class GameModule extends AbstractModule {
         if (getGameState() == gameState) return;
         if (getGameState() == GameStates.ACTIVE && gameState == GameStates.LOBBY) return;
 
-        loadedGameState.forEach(state -> {
-            state.onDisable();
-            loadedGameState.remove(state);
-        });
+        loadedGameState.forEach(AbstractGameState::onDisable);
+        loadedGameState.clear();
 
         switch (gameState) {
             case ACTIVE -> {

@@ -10,12 +10,12 @@ import java.util.Collection;
 
 public class ActiveState extends AbstractGameState {
     public ActiveState(GameModule gameModule) {
-        super(gameModule, Arrays.asList(), "Lobby");
+        super(gameModule, "Active");
     }
 
     @Override
     public void onEnable() {
-        ActiveRunnable activeRunnable = new ActiveRunnable(this);
+        init();
     }
 
     @Override
