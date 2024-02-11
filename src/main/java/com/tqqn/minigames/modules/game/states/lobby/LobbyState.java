@@ -5,7 +5,7 @@ import com.tqqn.minigames.modules.game.GameModule;
 
 import java.util.Arrays;
 
-public class LobbyState extends AbstractGameState {
+public final class LobbyState extends AbstractGameState {
     public LobbyState(GameModule gameModule) {
         super(gameModule, "Lobby");
     }

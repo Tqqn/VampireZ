@@ -5,7 +5,7 @@ import com.tqqn.minigames.modules.database.DatabaseModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-public class DefaultConfig {
+public final class DefaultConfig {
 
     private final DatabaseModule databaseModule;
     private final VampireZ plugin;

@@ -10,7 +10,7 @@ import com.tqqn.minigames.modules.team.TeamModule;
 
 import java.util.LinkedHashMap;
 
-public class ModuleManager {
+public final class ModuleManager {
 
     private final VampireZ plugin;
     private final LinkedHashMap<Class<? extends AbstractModule>, AbstractModule> modules;
@@ -23,8 +23,8 @@ public class ModuleManager {
     public void init() {
         modules.put(DatabaseModule.class, new DatabaseModule(plugin));
         modules.put(PlayerModule.class, new PlayerModule(plugin));
-        modules.put(TeamModule.class, new TeamModule(plugin));
         modules.put(GameModule.class, new GameModule(plugin));
+        modules.put(TeamModule.class, new TeamModule(plugin));
         modules.put(MenuModule.class, new MenuModule(plugin));
 
         registerModules();

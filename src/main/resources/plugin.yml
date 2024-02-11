@@ -9,6 +9,9 @@ commands:
   team:
     description: Choose a Team
     usage: /<command>
+  shout:
+    description: Shout a message globally
+    usage: /<command>
   adminstart:
     description: Admin Start Command
     usage: /<command>

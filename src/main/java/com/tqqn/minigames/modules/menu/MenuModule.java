@@ -8,7 +8,7 @@ import com.tqqn.minigames.modules.team.menus.SelectTeamMenu;
 
 import java.util.*;
 
-public class MenuModule extends AbstractModule {
+public final class MenuModule extends AbstractModule {
 
     private static Map<Class<? extends Menu>, Menu> loadedMenus;
 

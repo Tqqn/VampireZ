@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class PlayerModule extends AbstractModule {
+public final class PlayerModule extends AbstractModule {
 
     private static final List<PlayerModel> CACHED_PLAYERS = Collections.synchronizedList(new ArrayList<>());
     private final DatabaseModule databaseModule;
@@ -67,6 +67,7 @@ public class PlayerModule extends AbstractModule {
         player.getInventory().clear();
 
         player.teleport(databaseModule.getDefaultConfig().getSpawn("lobby"));
+        player.setInvisible(false);
 
         Bukkit.getOnlinePlayers().forEach(players -> players.sendMessage(MessageUtil.PLAYER_JOIN.getMessage("<red>", player.getName(), "1", "1")));
     }

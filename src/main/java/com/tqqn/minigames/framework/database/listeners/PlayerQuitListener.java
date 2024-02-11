@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerQuitListener implements Listener {
+public final class PlayerQuitListener implements Listener {
 
     private final DatabaseModule databaseModule;
     public PlayerQuitListener(DatabaseModule databaseModule) {

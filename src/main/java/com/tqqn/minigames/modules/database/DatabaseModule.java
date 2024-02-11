@@ -19,7 +19,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
-public class DatabaseModule extends AbstractModule {
+public final class DatabaseModule extends AbstractModule {
 
     private static DefaultConfig defaultConfig;
     private final Map<String, AbstractConfig> loadedCustomConfigs;

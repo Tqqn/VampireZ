@@ -2,11 +2,12 @@ package com.tqqn.minigames.modules.team.teams;
 
 import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.framework.team.AbstractTeam;
+import com.tqqn.minigames.modules.database.DatabaseModule;
 
-public class Vampires extends AbstractTeam {
+public final class Vampires extends AbstractTeam {
 
-    public Vampires() {
-        super("Vampires", "<red>", "<red>[V]");
+    public Vampires(DatabaseModule databaseModule) {
+        super("Vampires", "<red>", "<red>[V]", databaseModule.getDefaultConfig().getSpawn("vampires"));
     }
 
     @Override

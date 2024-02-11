@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 
 import java.util.Collection;
 
-public class EndState extends AbstractGameState {
+public final class EndState extends AbstractGameState {
     public EndState(GameModule gameModule) {
         super(gameModule, "End");
     }

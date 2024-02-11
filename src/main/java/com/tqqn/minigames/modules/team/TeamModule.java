@@ -6,16 +6,22 @@ import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.framework.team.AbstractTeam;
 import com.tqqn.minigames.framework.team.listeners.DamageByEntityListener;
 import com.tqqn.minigames.framework.team.listeners.PlayerDeathListener;
+import com.tqqn.minigames.framework.team.listeners.WorldLoadListener;
+import com.tqqn.minigames.modules.database.DatabaseModule;
+import com.tqqn.minigames.modules.team.abilities.VampireFlyAbility;
 import com.tqqn.minigames.modules.team.commands.ChooseTeamCommand;
+import com.tqqn.minigames.modules.team.commands.TeamShoutCommand;
 import com.tqqn.minigames.modules.team.teams.Humans;
 import com.tqqn.minigames.modules.team.teams.Vampires;
 import com.tqqn.minigames.utils.ChatUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class TeamModule extends AbstractModule {
+public final class TeamModule extends AbstractModule {
 
     private LinkedHashMap<Class<? extends AbstractTeam>, AbstractTeam> teams;
 
@@ -27,17 +33,30 @@ public class TeamModule extends AbstractModule {
     public void onEnable() {
         setListeners(Arrays.asList(
                 new DamageByEntityListener(),
-                new PlayerDeathListener(this)));
-        setCommands(Map.of("team", new ChooseTeamCommand()));
+                new PlayerDeathListener(this), new WorldLoadListener(this)));
+        setCommands(Map.of("team", new ChooseTeamCommand(), "shout", new TeamShoutCommand()));
         init();
+        registerAbilities();
         teams = new LinkedHashMap<>();
-        teams.put(Humans.class, new Humans());
-        teams.put(Vampires.class, new Vampires());
     }
 
     @Override
     public void onDisable() {
         teams.clear();
+    }
+
+    public void registerTeams() {
+        teams.put(Humans.class, new Humans((DatabaseModule) getPlugin().getModuleManager().getModule(DatabaseModule.class)));
+        teams.put(Vampires.class, new Vampires((DatabaseModule) getPlugin().getModuleManager().getModule(DatabaseModule.class)));
+    }
+
+    public void registerAbilities() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new VampireFlyAbility(), getPlugin());
+    }
+
+    public AbstractTeam getTeam(Class<? extends AbstractTeam> team) {
+        return teams.get(team);
     }
 
     public AbstractTeam whichTeamIsBigger() {
@@ -60,9 +79,5 @@ public class TeamModule extends AbstractModule {
         if (sendMessage) {
             playerModel.getPlayer().sendMessage(ChatUtils.format("<green>You have chosen the " + teams.get(team).getTeamColor() + teams.get(team).getName() + " <green>team!"));
         }
-    }
-
-    public void removePlayerFromTeam(PlayerModel playerModel, Class<? extends AbstractTeam> team) {
-        teams.get(team).removePlayerFromTeam(playerModel);
     }
 }

@@ -11,7 +11,7 @@ import com.tqqn.minigames.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
-public class SelectTeamMenu extends Menu {
+public final class SelectTeamMenu extends Menu {
 
     public SelectTeamMenu(MenuModule menuModule) {
         super("&cSelect your team!", 3, menuModule);

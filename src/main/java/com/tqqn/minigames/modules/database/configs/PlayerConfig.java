@@ -7,7 +7,7 @@ import com.tqqn.minigames.modules.database.DatabaseModule;
 
 import java.util.UUID;
 
-public class PlayerConfig extends AbstractConfig {
+public final class PlayerConfig extends AbstractConfig {
     public PlayerConfig(DatabaseModule databaseModule, String configName) {
         super(databaseModule, configName);
     }

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 
-public class PlayerStats {
+public final class PlayerStats {
 
     private final HashMap<StatType, Integer> stats;
 

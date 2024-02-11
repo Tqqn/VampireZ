@@ -6,12 +6,14 @@ import com.tqqn.minigames.modules.team.TeamModule;
 import com.tqqn.minigames.modules.team.teams.Humans;
 import com.tqqn.minigames.modules.team.teams.Vampires;
 import com.tqqn.minigames.utils.MessageUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 
-public class PlayerDeathListener implements Listener {
+public final class PlayerDeathListener implements Listener {
 
     private final TeamModule teamModule;
 
@@ -22,13 +24,15 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         event.setDeathMessage("");
+        event.setDroppedExp(0);
+        event.getDrops().clear();
 
         PlayerModel killedPlayer = PlayerModule.getPlayerModel(event.getPlayer().getUniqueId());
-        String message;
+        Component message;
 
         if (event.getPlayer().getKiller() != null) {
             PlayerModel killer = PlayerModule.getPlayerModel(event.getPlayer().getKiller().getUniqueId());
-            message = String.valueOf(MessageUtil.VAMPIRE_KILL_HUMAN.getMessage("<red>", killedPlayer.getName(), "<red>", killer.getName()));
+            message = MessageUtil.VAMPIRE_KILL_HUMAN.getMessage("<red>", killedPlayer.getName(), "<red>", killer.getName());
         } else {
             message = null;
         }
@@ -39,5 +43,6 @@ public class PlayerDeathListener implements Listener {
             }
             teamModule.addPlayerToTeam(killedPlayer, Vampires.class, false);
         }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(teamModule.getPlugin(), () -> event.getPlayer().spigot().respawn(),2L);
     }
 }

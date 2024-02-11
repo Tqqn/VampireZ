@@ -18,9 +18,6 @@ public class Menu {
     private final Inventory inventory;
     private final Map<Integer, MenuButton> buttonMap;
 
-    private Consumer<Player> inventoryClosed;
-    private Consumer<Player> inventoryOpened;
-
     /**
      * Creates a new Menu Object.
      * @param title String
@@ -95,26 +92,6 @@ public class Menu {
 
 
     /**
-     * Void Method that will handle the inventory close.
-     * @param player Player
-     */
-    public void handleClose(Player player) {
-        if (inventoryClosed == null) return;
-
-        inventoryClosed.accept(player);
-    }
-
-    /**
-     * Void Method that will handle the inventory open.
-     * @param player Player
-     */
-    public void handleOpen(Player player) {
-        if (inventoryOpened == null) return;
-
-        inventoryOpened.accept(player);
-    }
-
-    /**
      * Void Method that will handle the button click.
      * @param event InventoryClickEvent
      */
@@ -142,8 +119,6 @@ public class Menu {
 
         player.openInventory(inventory);
         menuModule.registerMenu(player.getUniqueId(), this);
-
-        handleOpen(player);
     }
 
     public enum FillerType {

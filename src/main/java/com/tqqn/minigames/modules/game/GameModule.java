@@ -4,7 +4,9 @@ import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.framework.game.AbstractGameState;
 import com.tqqn.minigames.framework.game.GameStates;
+import com.tqqn.minigames.framework.game.listeners.BlockedMCFeaturesListener;
 import com.tqqn.minigames.framework.game.listeners.PlayerChatListener;
+import com.tqqn.minigames.framework.game.listeners.PlayerRespawnListener;
 import com.tqqn.minigames.framework.team.listeners.PlayerDeathListener;
 import com.tqqn.minigames.modules.game.commands.AdminStartCommand;
 import com.tqqn.minigames.modules.game.states.active.ActiveState;
@@ -32,7 +34,7 @@ public class GameModule extends AbstractModule {
 
     @Override
     public void onEnable() {
-        setListeners(Arrays.asList(new PlayerChatListener()));
+        setListeners(Arrays.asList(new PlayerChatListener(), new BlockedMCFeaturesListener(), new PlayerRespawnListener()));
         setCommands(Map.of("adminstart", new AdminStartCommand(this)));
         init();
 

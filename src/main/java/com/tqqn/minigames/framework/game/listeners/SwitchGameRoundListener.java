@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class SwitchGameRoundListener implements Listener {
+public final class SwitchGameRoundListener implements Listener {
 
     private final GameModule gameModule;
 

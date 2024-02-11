@@ -17,12 +17,14 @@ public class PlayerModel {
 
     @Setter private AbstractTeam currentTeam = null;
     @Setter private boolean spectator;
+    @Setter private boolean isBat;
 
     public PlayerModel(UUID uuid, String name, PlayerStats stats) {
         this.uuid = uuid;
         this.name = name;
         this.stats = stats;
         this.spectator = false;
+        isBat = false;
     }
 
     public Player getPlayer() {

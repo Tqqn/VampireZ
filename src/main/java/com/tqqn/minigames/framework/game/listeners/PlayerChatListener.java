@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class PlayerChatListener implements Listener {
+public final class PlayerChatListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
