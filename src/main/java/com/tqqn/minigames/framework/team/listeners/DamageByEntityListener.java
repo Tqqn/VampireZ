@@ -10,6 +10,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public final class DamageByEntityListener implements Listener {
 
+
+    /**
+     * Handles the EntityDamageByEntityEvent
+     * It checks if both the damager and the entity being damaged are instances of Player. If not, the method returns without further action.
+     * If both entities are players, it retrieves their PlayerModel objects using PlayerModule.getPlayerModel().
+     * Then, it checks if both the attacker and the defender are assigned to a team.
+     * If both players belong to the same team, the event is cancelled and a message is sent to the attacker indicating they cannot harm their teammate.
+     */
     @EventHandler
     public void onDamageByPlayer(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player) && !(event.getDamager() instanceof Player)) return;

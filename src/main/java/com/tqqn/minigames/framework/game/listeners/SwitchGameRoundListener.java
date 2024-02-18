@@ -14,6 +14,12 @@ public final class SwitchGameRoundListener implements Listener {
         this.gameModule = gameModule;
     }
 
+    /**
+     * Handles the custom SwitchGameRoundEvent
+     * Sets the current round of the game to the next round specified in the event.
+     * Spawns lightning effects randomly around online players' locations.
+     * TODO: Send NMS Title - This action is a placeholder for sending a NMS title message.
+     */
     @EventHandler
     public void onRoundSwitch(SwitchGameRoundEvent event) {
         if (event.getNextRound() == null) return;

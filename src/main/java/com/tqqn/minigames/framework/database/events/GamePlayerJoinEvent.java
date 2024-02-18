@@ -17,6 +17,7 @@ public class GamePlayerJoinEvent extends Event implements Cancellable {
 
     /**
      * Use GamePlayerJoinEvent and not the spigot/bukkit one, as of this way we can guarantee that a plugin player object is existing/made.
+     *
      * @param playerModel custom player object
      */
     public GamePlayerJoinEvent(PlayerModel playerModel) {
@@ -25,6 +26,10 @@ public class GamePlayerJoinEvent extends Event implements Cancellable {
 
     @Override
     public @NotNull HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 

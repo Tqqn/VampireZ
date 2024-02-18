@@ -12,6 +12,13 @@ public class WorldLoadListener implements Listener {
     public WorldLoadListener(TeamModule teamModule) {
         this.teamModule = teamModule;
     }
+
+    /**
+     * Handles the WorldLoadEvent
+     * It checks if the loaded world is the main world (named "world").
+     * If it's not the main world, the method returns without further action.
+     * If it is the main world, it registers teams using the teamModule.
+     */
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
         if (!event.getWorld().getName().equals("world"))  return;

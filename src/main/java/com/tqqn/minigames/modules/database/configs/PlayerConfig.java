@@ -7,11 +7,29 @@ import com.tqqn.minigames.modules.database.DatabaseModule;
 
 import java.util.UUID;
 
+/**
+ * PlayerConfig class extends AbstractConfig and provides methods for managing player configurations.
+ * It allows creating player templates, retrieving player statistics, and saving player data.
+ */
 public final class PlayerConfig extends AbstractConfig {
+
+    /**
+     * Constructor to initialize PlayerConfig with the specified parameters.
+     *
+     * @param databaseModule The DatabaseModule instance.
+     * @param configName     The name of the configuration.
+     */
     public PlayerConfig(DatabaseModule databaseModule, String configName) {
         super(databaseModule, configName);
     }
 
+
+    /**
+     * Creates a player template with default statistics and saves it to the configuration.
+     *
+     * @param uuid The UUID of the player.
+     * @param name The name of the player.
+     */
     public void createPlayerTemplate(UUID uuid, String name) {
         saveValueToConfig(uuid + ".name", name);
         saveValueToConfig(uuid + PlayerStats.StatType.HUMAN_KILLS.getConfigPath(), 0);
@@ -25,6 +43,12 @@ public final class PlayerConfig extends AbstractConfig {
         saveCustomConfig();
     }
 
+    /**
+     * Retrieves the player statistics from the configuration.
+     *
+     * @param uuid The UUID of the player.
+     * @return PlayerStats object containing the player's statistics.
+     */
     public PlayerStats getStats(UUID uuid) {
         return new PlayerStats(
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.HUMAN_KILLS.getConfigPath()),
@@ -35,9 +59,13 @@ public final class PlayerConfig extends AbstractConfig {
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_WINS.getConfigPath()),
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_LOSSES.getConfigPath()),
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.VAMPIRE_DEATHS.getConfigPath()));
-
     }
 
+    /**
+     * Saves the player data to the configuration.
+     *
+     * @param playerModel The PlayerModel object representing the player.
+     */
     public void savePlayer(PlayerModel playerModel) {
         saveValueToConfig(playerModel.getUuid() + ".name", playerModel.getName());
         saveCustomConfig();

@@ -12,6 +12,10 @@ import org.bukkit.plugin.PluginManager;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * Abstract class representing a module in the VampireZ plugin.
+ * Each module can have listeners and commands associated with it.
+ */
 @Getter
 public abstract class AbstractModule {
 
@@ -20,13 +24,32 @@ public abstract class AbstractModule {
     @Setter private Collection<Listener> listeners;
     @Setter private Map<String, CommandExecutor> commands;
     private final String name;
+
+    /**
+     * Constructor to initialize a module with specified parameters.
+     *
+     * @param plugin The VampireZ plugin instance.
+     * @param name   The name of the module.
+     */
     public AbstractModule(VampireZ plugin, String name) {
         this.plugin = plugin;
         this.name = name;
     }
+
+    /**
+     * Abstract method to be implemented to handle module enable logic.
+     */
     public abstract void onEnable();
+
+    /**
+     * Abstract method to be implemented to handle module disable logic.
+     */
     public abstract void onDisable();
 
+    /**
+     * Initializes the module by registering listeners and commands.
+     * This method is called during module loading.
+     */
     protected void init() {
         Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " is loading...");
         registerListeners();
@@ -34,12 +57,19 @@ public abstract class AbstractModule {
         Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " finished loading!");
     }
 
+    /**
+     * Disables the module by unregistering listeners.
+     * This method is called during module unloading.
+     */
     protected void disable() {
         Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " is disabling...");
         unRegisterListeners();
         Bukkit.getLogger().info(getPlugin().getPrefix() + "Module: " + name + " finished disabling!");
     }
 
+    /**
+     * Registers commands associated with the module.
+     */
     private void registerCommands() {
         if (commands == null || commands.isEmpty()) return;
         commands.forEach((commandString, command) -> {
@@ -48,6 +78,9 @@ public abstract class AbstractModule {
         });
     }
 
+    /**
+     * Registers listeners associated with the module.
+     */
     private void registerListeners() {
         if (listeners == null || listeners.isEmpty()) return;
         PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -57,6 +90,9 @@ public abstract class AbstractModule {
         });
     }
 
+    /**
+     * Unregisters listeners associated with the module.
+     */
     private void unRegisterListeners() {
         if (listeners == null || listeners.isEmpty()) return;
         listeners.forEach(listener -> {

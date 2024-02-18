@@ -10,13 +10,13 @@ import java.util.function.Consumer;
 public class MenuButton {
     private final ItemStack itemStack;
     /**
-     * -- GETTER --
      *  Returns the Consumer (Player/whoClicked).
      */
     private Consumer<Player> whoClicked;
 
     /**
      * Creates a new MenuButton Object.
+     *
      * @param itemStack ItemStack
      */
     public MenuButton(ItemStack itemStack) {
@@ -25,6 +25,7 @@ public class MenuButton {
 
     /**
      * Sets the Consumer (Player) and returns this MenuButton.
+     *
      * @param whoClicked Consumer(Player)
      */
     public MenuButton setWhoClicked(Consumer<Player> whoClicked) {

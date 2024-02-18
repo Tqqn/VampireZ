@@ -13,6 +13,12 @@ import org.bukkit.event.Listener;
 
 public final class PlayerChatListener implements Listener {
 
+
+    /**
+     * Handles the AsyncChatEvent
+     * Cancels the event to prevent default chat behavior.
+     * Sends formatted chat messages to players depending if the game is in the lobby state or not.
+     */
     @EventHandler
     public void onChat(AsyncChatEvent event) {
         event.setCancelled(true);

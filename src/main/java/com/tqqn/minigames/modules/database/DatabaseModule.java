@@ -18,12 +18,21 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * DatabaseModule class extends AbstractModule and manages database-related functionalities.
+ * It handles player data and configurations.
+ */
 @Getter
 public final class DatabaseModule extends AbstractModule {
 
     private static DefaultConfig defaultConfig;
     private final Map<String, AbstractConfig> loadedCustomConfigs;
 
+    /**
+     * Constructor to initialize DatabaseModule with the specified parameters.
+     *
+     * @param plugin The VampireZ plugin instance.
+     */
     public DatabaseModule(VampireZ plugin) {
         super(plugin, "Database");
 
@@ -32,6 +41,9 @@ public final class DatabaseModule extends AbstractModule {
         loadedCustomConfigs.put("players.yml", new PlayerConfig(this, "players.yml"));
     }
 
+    /**
+     * Handles module enabling logic.
+     */
     @Override
     public void onEnable() {
         setListeners(Arrays.asList(
@@ -40,6 +52,9 @@ public final class DatabaseModule extends AbstractModule {
         init();
     }
 
+    /**
+     * Handles module disabling logic.
+     */
     @Override
     public void onDisable() {
         Bukkit.getOnlinePlayers().forEach(player -> {
@@ -51,6 +66,11 @@ public final class DatabaseModule extends AbstractModule {
         disable();
     }
 
+    /**
+     * Saves player data to the database.
+     *
+     * @param playerModel The PlayerModel object representing the player.
+     */
     public void savePlayer(PlayerModel playerModel) {
         CompletableFuture.runAsync(() -> {
             PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
@@ -58,16 +78,34 @@ public final class DatabaseModule extends AbstractModule {
         });
     }
 
+    /**
+     * Loads player data async from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @param name The name of the player.
+     * @return CompletableFuture representing the asynchronous loading process.
+     */
     public CompletableFuture<PlayerModel> loadPlayer(UUID uuid, String name) {
         PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
         return CompletableFuture.supplyAsync(() -> new PlayerModel(uuid, name, playerConfig.getStats(uuid)));
     }
 
+    /**
+     * Checks if a player exists in the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return CompletableFuture representing the asynchronous existence check.
+     */
     public CompletableFuture<Boolean> doesPlayerExist(UUID uuid) {
         PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
         return CompletableFuture.supplyAsync(() -> playerConfig.getCustomConfig().contains(String.valueOf(uuid)));
     }
 
+    /**
+     * Getter for the default configuration.
+     *
+     * @return The DefaultConfig instance.
+     */
     public DefaultConfig getDefaultConfig() {
         return defaultConfig;
     }

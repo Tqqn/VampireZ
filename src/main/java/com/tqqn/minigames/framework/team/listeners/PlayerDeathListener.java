@@ -21,6 +21,12 @@ public final class PlayerDeathListener implements Listener {
         this.teamModule = teamModule;
     }
 
+
+    /**
+     * Handles the PlayerDeathEvent
+     * It customizes the death message, clears dropped experience points and items, and handles player respawn.
+     * Additionally, it adjusts the player's team affiliation based on the game logic.
+     */
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         event.setDeathMessage("");

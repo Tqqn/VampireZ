@@ -13,13 +13,19 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 public final class PlayerModule extends AbstractModule {
 
-    private static final List<PlayerModel> CACHED_PLAYERS = Collections.synchronizedList(new ArrayList<>());
-    private final DatabaseModule databaseModule;
+    private static final HashMap<UUID, PlayerModel> CACHED_PLAYERS = new HashMap<>(); // Cached Player Map
+    private final DatabaseModule databaseModule; // DatabaseModule variable
 
+    /**
+     * Constructs a new PlayerModule object.
+     *
+     * @param plugin The VampireZ plugin instance.
+     */
     public PlayerModule(VampireZ plugin) {
         super(plugin, "Player");
         this.databaseModule = (DatabaseModule) getPlugin().getModuleManager().getModule(DatabaseModule.class);
@@ -35,15 +41,32 @@ public final class PlayerModule extends AbstractModule {
         disable();
     }
 
+    /**
+     * Retrieves the PlayerModel associated with the specified UUID from the cache.
+     *
+     * @param uuid The UUID of the player.
+     * @return The PlayerModel associated with the specified UUID, or null if none exists.
+     */
     public static PlayerModel getPlayerModel(UUID uuid) {
-        return CACHED_PLAYERS.stream().filter(playerModel -> playerModel.getUuid().equals(uuid)).findFirst().orElse(null);
+        return CACHED_PLAYERS.get(uuid);
     }
 
+    /**
+     * Processes the first login of a player.
+     * This method creates a player template in the player configuration file if it doesn't exist already.
+     *
+     * @param player The player object representing the player who is logging in for the first time.
+     */
     public void processFirstLogin(Player player) {
         PlayerConfig playerConfig = (PlayerConfig) databaseModule.getLoadedCustomConfigs().get("players.yml");
         playerConfig.createPlayerTemplate(player.getUniqueId(), player.getName());
     }
 
+    /**
+     * Processes the login of a player.
+     *
+     * @param player The player object representing the player who is logging in.
+     */
     public void processLogin(Player player) {
         try {
             if (!databaseModule.doesPlayerExist(player.getUniqueId()).get()) {
@@ -62,7 +85,7 @@ public final class PlayerModule extends AbstractModule {
             return;
         }
 
-        CACHED_PLAYERS.add(playerModel);
+        CACHED_PLAYERS.put(player.getUniqueId(), playerModel);
 
         player.getInventory().clear();
 
@@ -72,6 +95,11 @@ public final class PlayerModule extends AbstractModule {
         Bukkit.getOnlinePlayers().forEach(players -> players.sendMessage(MessageUtil.PLAYER_JOIN.getMessage("<red>", player.getName(), "1", "1")));
     }
 
+    /**
+     * Sets the specified PlayerModel as a spectator.
+     *
+     * @param playerModel The PlayerModel to set as a spectator.
+     */
     public void setSpectator(PlayerModel playerModel) {
         playerModel.setSpectator(true);
         Player player = Bukkit.getPlayer(playerModel.getUuid());

@@ -17,6 +17,10 @@ public final class MenuListener implements Listener {
         this.menuModule = menuModule;
     }
 
+    /**
+     * Handles the InventoryClickEvent.
+     * Matches the clicked inventory with a menu and handles the click action.
+     */
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
         Menu matchedMenu = menuModule.matchMenu(event.getWhoClicked().getUniqueId());
@@ -25,15 +29,21 @@ public final class MenuListener implements Listener {
         matchedMenu.handleClick(event);
     }
 
+    /**
+     * Handles the InventoryCloseEvent.
+     * Unregisters the menu associated with the closed inventory.
+     */
     @EventHandler
     public void inventoryClose(InventoryCloseEvent event) {
-        // Unregister menu - it has been closed.
         menuModule.unregisterMenu(event.getPlayer().getUniqueId());
     }
 
+    /**
+     * Handles the PlayerQuitEvent.
+     * Unregisters the menu associated with the player who quit.
+     */
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
-        // Unregister menu - the player has quit.
         menuModule.unregisterMenu(event.getPlayer().getUniqueId());
     }
 }
