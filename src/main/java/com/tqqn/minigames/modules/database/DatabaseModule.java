@@ -4,10 +4,12 @@ import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.framework.database.DefaultConfig;
 import com.tqqn.minigames.framework.database.config.AbstractConfig;
+import com.tqqn.minigames.framework.database.drivers.IDatabaseDriver;
 import com.tqqn.minigames.framework.database.listeners.PlayerJoinListener;
 import com.tqqn.minigames.framework.database.listeners.PlayerQuitListener;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
-import com.tqqn.minigames.modules.database.configs.PlayerConfig;
+import com.tqqn.minigames.modules.database.drivers.config.ConfigDriver;
+import com.tqqn.minigames.modules.database.drivers.mongo.MongoDriver;
 import com.tqqn.minigames.modules.player.PlayerModule;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -26,7 +28,7 @@ import java.util.concurrent.CompletableFuture;
 public final class DatabaseModule extends AbstractModule {
 
     private static DefaultConfig defaultConfig;
-    private final Map<String, AbstractConfig> loadedCustomConfigs;
+    private final IDatabaseDriver databaseDriver;
 
     /**
      * Constructor to initialize DatabaseModule with the specified parameters.
@@ -37,8 +39,7 @@ public final class DatabaseModule extends AbstractModule {
         super(plugin, "Database");
 
         defaultConfig = new DefaultConfig(this);
-        loadedCustomConfigs = new HashMap<>();
-        loadedCustomConfigs.put("players.yml", new PlayerConfig(this, "players.yml"));
+        databaseDriver = new MongoDriver(this);
     }
 
     /**
@@ -66,6 +67,12 @@ public final class DatabaseModule extends AbstractModule {
         disable();
     }
 
+    public void createPlayerTemplate(UUID uuid, String name) {
+        CompletableFuture.runAsync(() -> {
+            databaseDriver.createPlayerTemplate(uuid, name);
+        });
+    }
+
     /**
      * Saves player data to the database.
      *
@@ -73,8 +80,7 @@ public final class DatabaseModule extends AbstractModule {
      */
     public void savePlayer(PlayerModel playerModel) {
         CompletableFuture.runAsync(() -> {
-            PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
-            playerConfig.savePlayer(playerModel);
+            databaseDriver.savePlayer(playerModel);
         });
     }
 
@@ -86,8 +92,7 @@ public final class DatabaseModule extends AbstractModule {
      * @return CompletableFuture representing the asynchronous loading process.
      */
     public CompletableFuture<PlayerModel> loadPlayer(UUID uuid, String name) {
-        PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
-        return CompletableFuture.supplyAsync(() -> new PlayerModel(uuid, name, playerConfig.getStats(uuid)));
+        return CompletableFuture.supplyAsync(() -> new PlayerModel(uuid, name, databaseDriver.getStats(uuid)));
     }
 
     /**
@@ -97,8 +102,7 @@ public final class DatabaseModule extends AbstractModule {
      * @return CompletableFuture representing the asynchronous existence check.
      */
     public CompletableFuture<Boolean> doesPlayerExist(UUID uuid) {
-        PlayerConfig playerConfig = (PlayerConfig) loadedCustomConfigs.get("players.yml");
-        return CompletableFuture.supplyAsync(() -> playerConfig.getCustomConfig().contains(String.valueOf(uuid)));
+        return CompletableFuture.supplyAsync(() -> databaseDriver.doesPlayerExist(uuid));
     }
 
     /**

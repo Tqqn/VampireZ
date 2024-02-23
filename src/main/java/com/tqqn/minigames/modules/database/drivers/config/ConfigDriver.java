@@ -1,6 +1,7 @@
-package com.tqqn.minigames.modules.database.configs;
+package com.tqqn.minigames.modules.database.drivers.config;
 
 import com.tqqn.minigames.framework.database.config.AbstractConfig;
+import com.tqqn.minigames.framework.database.drivers.IDatabaseDriver;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.framework.database.models.PlayerStats;
 import com.tqqn.minigames.modules.database.DatabaseModule;
@@ -11,7 +12,7 @@ import java.util.UUID;
  * PlayerConfig class extends AbstractConfig and provides methods for managing player configurations.
  * It allows creating player templates, retrieving player statistics, and saving player data.
  */
-public final class PlayerConfig extends AbstractConfig {
+public final class ConfigDriver implements IDatabaseDriver {
 
     /**
      * Constructor to initialize PlayerConfig with the specified parameters.
@@ -19,7 +20,7 @@ public final class PlayerConfig extends AbstractConfig {
      * @param databaseModule The DatabaseModule instance.
      * @param configName     The name of the configuration.
      */
-    public PlayerConfig(DatabaseModule databaseModule, String configName) {
+    public ConfigDriver(DatabaseModule databaseModule, String configName) {
         super(databaseModule, configName);
     }
 
@@ -30,6 +31,7 @@ public final class PlayerConfig extends AbstractConfig {
      * @param uuid The UUID of the player.
      * @param name The name of the player.
      */
+    @Override
     public void createPlayerTemplate(UUID uuid, String name) {
         saveValueToConfig(uuid + ".name", name);
         saveValueToConfig(uuid + PlayerStats.StatType.HUMAN_KILLS.getConfigPath(), 0);
@@ -49,6 +51,7 @@ public final class PlayerConfig extends AbstractConfig {
      * @param uuid The UUID of the player.
      * @return PlayerStats object containing the player's statistics.
      */
+    @Override
     public PlayerStats getStats(UUID uuid) {
         return new PlayerStats(
                 getCustomConfig().getInt(uuid + PlayerStats.StatType.HUMAN_KILLS.getConfigPath()),
@@ -66,6 +69,7 @@ public final class PlayerConfig extends AbstractConfig {
      *
      * @param playerModel The PlayerModel object representing the player.
      */
+    @Override
     public void savePlayer(PlayerModel playerModel) {
         saveValueToConfig(playerModel.getUuid() + ".name", playerModel.getName());
         saveCustomConfig();

@@ -2,7 +2,6 @@ package com.tqqn.minigames;
 
 import com.tqqn.minigames.modules.ModuleManager;
 import com.tqqn.minigames.modules.nms.ReflectionLayer;
-import com.tqqn.minigames.modules.nms.v1_20_R3.v1_20_R3;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

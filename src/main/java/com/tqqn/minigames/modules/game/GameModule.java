@@ -90,7 +90,6 @@ public class GameModule extends AbstractModule {
             }
             case END -> {
                 GameModule.gameState = GameStates.END;
-
             }
         }
     }

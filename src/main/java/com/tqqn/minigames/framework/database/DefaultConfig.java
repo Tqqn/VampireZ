@@ -5,9 +5,8 @@ import com.tqqn.minigames.modules.database.DatabaseModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-public final class DefaultConfig {
+public class DefaultConfig {
 
-    private final DatabaseModule databaseModule; // Database Module Instance
     private final VampireZ plugin; // Plugin Instance
 
     /**
@@ -16,7 +15,6 @@ public final class DefaultConfig {
      * @param databaseModule The DatabaseModule instance.
      */
     public DefaultConfig(DatabaseModule databaseModule) {
-        this.databaseModule = databaseModule;
         plugin = databaseModule.getPlugin();
         plugin.saveDefaultConfig();
     }

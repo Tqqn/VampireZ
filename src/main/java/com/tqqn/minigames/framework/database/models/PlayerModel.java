@@ -5,6 +5,7 @@ import com.tqqn.minigames.framework.team.AbstractTeam;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -47,5 +48,10 @@ public class PlayerModel {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public void spawn(Location location) {
+        getPlayer().getInventory().clear();
+        getPlayer().teleport(location);
     }
 }
