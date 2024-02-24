@@ -18,7 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public final class TeamModule extends AbstractModule {
 
-    private LinkedHashMap<Class<? extends AbstractTeam>, AbstractTeam> teams;
+    private HashMap<Class<? extends AbstractTeam>, AbstractTeam> teams;
 
     /**
      * Constructs a new TeamModule instance.
@@ -49,7 +49,7 @@ public final class TeamModule extends AbstractModule {
         setCommands(Map.of("team", new ChooseTeamCommand(), "shout", new TeamShoutCommand()));
         init();
         registerAbilities();
-        teams = new LinkedHashMap<>();
+        teams = new HashMap<>();
     }
 
     /**

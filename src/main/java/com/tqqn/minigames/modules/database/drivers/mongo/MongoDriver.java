@@ -7,11 +7,13 @@ import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.tqqn.minigames.framework.database.drivers.IDatabaseDriver;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.framework.database.models.PlayerStats;
 import com.tqqn.minigames.modules.database.DatabaseModule;
 import lombok.Getter;
+import org.bson.Document;
 
 import java.util.UUID;
 
@@ -36,7 +38,7 @@ public class MongoDriver implements IDatabaseDriver {
 
     @Override
     public boolean doesPlayerExist(UUID uuid) {
-        return false;
+        return mongoDatabase.getCollection("players").find(Filters.eq("uuid", uuid.toString())).first() != null;
     }
 
     @Override
