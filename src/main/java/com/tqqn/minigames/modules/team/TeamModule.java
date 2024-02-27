@@ -5,6 +5,8 @@ import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.framework.team.AbstractTeam;
 import com.tqqn.minigames.framework.team.listeners.DamageByEntityListener;
+import com.tqqn.minigames.framework.team.listeners.PlayerDeathListener;
+import com.tqqn.minigames.framework.team.listeners.WorldLoadListener;
 import com.tqqn.minigames.modules.database.DatabaseModule;
 import com.tqqn.minigames.modules.team.abilities.VampireFlyAbility;
 import com.tqqn.minigames.modules.team.commands.ChooseTeamCommand;
@@ -16,7 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,7 +26,7 @@ import java.util.Map;
  */
 public final class TeamModule extends AbstractModule {
 
-    private LinkedHashMap<Class<? extends AbstractTeam>, AbstractTeam> teams;
+    private HashMap<Class<? extends AbstractTeam>, AbstractTeam> teams;
 
     /**
      * Constructs a new TeamModule instance.
@@ -42,12 +44,12 @@ public final class TeamModule extends AbstractModule {
     @Override
     public void onEnable() {
         setListeners(Arrays.asList(
-                new DamageByEntityListener()));
+                new DamageByEntityListener(),
+                new PlayerDeathListener(this), new WorldLoadListener(this)));
         setCommands(Map.of("team", new ChooseTeamCommand(), "shout", new TeamShoutCommand()));
         init();
         registerAbilities();
-        teams = new LinkedHashMap<>();
-        Bukkit.getScheduler().runTask(getPlugin(), this::registerTeams);
+        teams = new HashMap<>();
     }
 
     /**
