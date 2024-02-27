@@ -48,9 +48,9 @@ public final class VampireZ extends JavaPlugin {
         String bukkitVersion = Bukkit.getServer().getClass().getPackage().getName();
         String version = bukkitVersion.substring(bukkitVersion.lastIndexOf('.') + 1);
         try {
-            Class<?> nmsClass = Class.forName("com.tqqn.modules.nms." + version + "." + version);
+            Class<?> nmsClass = Class.forName("com.tqqn.minigames.modules.nms." + version + "." + version);
             Bukkit.getLogger().info("Using reflection layer for version " + version);
-            reflectionLayer = (ReflectionLayer) nmsClass.getConstructors()[0].newInstance();
+            reflectionLayer = (ReflectionLayer) nmsClass.getConstructors()[0].newInstance(this);
         } catch (Exception ignored) {
             Bukkit.getLogger().info("This version is not supported - " + version);
             Bukkit.getServer().shutdown();

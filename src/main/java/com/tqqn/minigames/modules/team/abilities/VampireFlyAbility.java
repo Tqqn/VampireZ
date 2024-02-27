@@ -54,6 +54,7 @@ public class VampireFlyAbility implements Listener {
      */
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
+        if (GameModule.getGameState() != GameStates.ACTIVE) return;
         if (!PlayerModule.getPlayerModel(event.getPlayer().getUniqueId()).isBat()) return;
         VampireZ.getReflectionLayer().moveBat(event.getPlayer());
     }
@@ -64,6 +65,7 @@ public class VampireFlyAbility implements Listener {
      */
     @EventHandler
     public void onToggleFly(PlayerToggleFlightEvent event) {
+        if (GameModule.getGameState() != GameStates.ACTIVE) return;
         PlayerModel playerModel = PlayerModule.getPlayerModel(event.getPlayer().getUniqueId());
         if (playerModel.getCurrentTeam().getClass() != Vampires.class) return;
         if (event.isFlying()) {

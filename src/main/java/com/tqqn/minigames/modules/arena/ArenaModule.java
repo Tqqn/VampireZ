@@ -30,7 +30,7 @@ public class ArenaModule extends AbstractModule {
     @Override
     public void onEnable() {
         init();
-        initNewArena(databaseModule);
+        //initNewArena(databaseModule);
     }
 
     /**

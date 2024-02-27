@@ -14,7 +14,7 @@ import java.util.UUID;
 public class PlayerModel {
 
     private final UUID uuid; // UUID of the player.
-    private final String name; // The name of the player.
+    @Setter private String name; // The name of the player.
     private final PlayerStats stats; // The stats associated with the player.
 
     @Setter private PluginScoreboard currentScoreboard = null; // Current scoreboard the player has. Default is null.
@@ -39,6 +39,15 @@ public class PlayerModel {
     }
 
     /**
+     * Constructs a new PlayerModel object with the specified UUID and name. Creates a new PlayerStats object.
+     * @param uuid The UUID of the player.
+     * @param name The name of the player.
+     */
+    public PlayerModel(UUID uuid, String name) {
+        this(uuid, name, new PlayerStats());
+    }
+
+    /**
      * Retrieves the Bukkit Player object associated with this player.
      * @return The Bukkit Player object, or null if the player is not online.
      */
@@ -50,6 +59,12 @@ public class PlayerModel {
         }
     }
 
+
+    /**
+     * Clears the player's inventory and teleports them to the specified location.
+     *
+     * @param location The location to which the player should be teleported.
+     */
     public void spawn(Location location) {
         getPlayer().getInventory().clear();
         getPlayer().teleport(location);

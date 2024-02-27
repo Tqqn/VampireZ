@@ -3,20 +3,16 @@ package com.tqqn.minigames.modules.database;
 import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
 import com.tqqn.minigames.framework.database.DefaultConfig;
-import com.tqqn.minigames.framework.database.config.AbstractConfig;
 import com.tqqn.minigames.framework.database.drivers.IDatabaseDriver;
-import com.tqqn.minigames.framework.database.listeners.PlayerJoinListener;
+import com.tqqn.minigames.framework.database.listeners.PlayerLoadListeners;
 import com.tqqn.minigames.framework.database.listeners.PlayerQuitListener;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
-import com.tqqn.minigames.modules.database.drivers.config.ConfigDriver;
-import com.tqqn.minigames.modules.database.drivers.mongo.MongoDriver;
+import com.tqqn.minigames.modules.database.drivers.MongoDriver;
 import com.tqqn.minigames.modules.player.PlayerModule;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -29,6 +25,7 @@ public final class DatabaseModule extends AbstractModule {
 
     private static DefaultConfig defaultConfig;
     private final IDatabaseDriver databaseDriver;
+    private PlayerModule playerModule;
 
     /**
      * Constructor to initialize DatabaseModule with the specified parameters.
@@ -40,6 +37,7 @@ public final class DatabaseModule extends AbstractModule {
 
         defaultConfig = new DefaultConfig(this);
         databaseDriver = new MongoDriver(this);
+
     }
 
     /**
@@ -48,8 +46,10 @@ public final class DatabaseModule extends AbstractModule {
     @Override
     public void onEnable() {
         setListeners(Arrays.asList(
-                new PlayerJoinListener(this),
+                new PlayerLoadListeners(this),
                 new PlayerQuitListener(this)));
+        databaseDriver.connect("players", "dev-toon-mongodb-1", "27017");
+        playerModule = (PlayerModule) getPlugin().getModuleManager().getModule(PlayerModule.class);
         init();
     }
 
@@ -68,9 +68,7 @@ public final class DatabaseModule extends AbstractModule {
     }
 
     public void createPlayerTemplate(UUID uuid, String name) {
-        CompletableFuture.runAsync(() -> {
-            databaseDriver.createPlayerTemplate(uuid, name);
-        });
+        CompletableFuture.runAsync(() -> databaseDriver.createPlayerTemplate(uuid, name));
     }
 
     /**
@@ -79,30 +77,18 @@ public final class DatabaseModule extends AbstractModule {
      * @param playerModel The PlayerModel object representing the player.
      */
     public void savePlayer(PlayerModel playerModel) {
-        CompletableFuture.runAsync(() -> {
-            databaseDriver.savePlayer(playerModel);
-        });
+        CompletableFuture.runAsync(() -> databaseDriver.savePlayer(playerModel));
     }
 
     /**
-     * Loads player data async from the database.
-     *
+     * Reads player data sync from the database
      * @param uuid The UUID of the player.
      * @param name The name of the player.
-     * @return CompletableFuture representing the asynchronous loading process.
+     * @return PlayerModel
      */
-    public CompletableFuture<PlayerModel> loadPlayer(UUID uuid, String name) {
-        return CompletableFuture.supplyAsync(() -> new PlayerModel(uuid, name, databaseDriver.getStats(uuid)));
-    }
-
-    /**
-     * Checks if a player exists in the database.
-     *
-     * @param uuid The UUID of the player.
-     * @return CompletableFuture representing the asynchronous existence check.
-     */
-    public CompletableFuture<Boolean> doesPlayerExist(UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> databaseDriver.doesPlayerExist(uuid));
+    public PlayerModel getPlayer(UUID uuid, String name) {
+        if (databaseDriver.getStats(uuid) == null) return null;
+        return new PlayerModel(uuid, name, databaseDriver.getStats(uuid));
     }
 
     /**

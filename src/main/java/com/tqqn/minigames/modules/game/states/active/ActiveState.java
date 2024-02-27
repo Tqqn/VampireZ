@@ -52,9 +52,7 @@ public final class ActiveState extends AbstractGameState {
     private void initTeamOptions() {
         TeamModule teamModule = (TeamModule) getGameModule().getPlugin().getModuleManager().getModule(TeamModule.class);
         Vampires vampires = (Vampires) teamModule.getTeam(Vampires.class);
-        vampires.getTeamPlayers().forEach(vampire -> {
-            vampire.getPlayer().setAllowFlight(true);
-        });
+        vampires.getTeamPlayers().forEach(vampire -> vampire.getPlayer().setAllowFlight(true));
 
         Bukkit.getOnlinePlayers().forEach(players -> {
             PlayerModel playerModel = PlayerModule.getPlayerModel(players.getUniqueId());

@@ -2,12 +2,14 @@ package com.tqqn.minigames.modules.player;
 
 import com.tqqn.minigames.VampireZ;
 import com.tqqn.minigames.framework.AbstractModule;
+import com.tqqn.minigames.framework.database.events.GamePlayerJoinEvent;
 import com.tqqn.minigames.framework.database.models.PlayerModel;
 import com.tqqn.minigames.modules.database.DatabaseModule;
-import com.tqqn.minigames.modules.database.drivers.config.ConfigDriver;
+import com.tqqn.minigames.utils.ChatUtils;
 import com.tqqn.minigames.utils.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -50,43 +52,20 @@ public final class PlayerModule extends AbstractModule {
     }
 
     /**
-     * Processes the first login of a player.
-     * This method creates a player template in the player configuration file if it doesn't exist already.
+     * Adds a player model to the cached players map.
      *
-     * @param player The player object representing the player who is logging in for the first time.
+     * @param playerModel The player model to add to the cache.
      */
-    public void processFirstLogin(Player player) {
-        databaseModule.createPlayerTemplate(player.getUniqueId(), player.getName());
+    public void cachePlayerModel(PlayerModel playerModel) {
+        CACHED_PLAYERS.put(playerModel.getUuid(), playerModel);
     }
 
     /**
-     * Processes the login of a player.
+     * Processes the login with spigot methods - this is called after the player is loaded from the DB.
      *
      * @param player The player object representing the player who is logging in.
      */
-    public void processLogin(Player player) {
-        try {
-            if (!databaseModule.doesPlayerExist(player.getUniqueId()).get()) {
-                processFirstLogin(player);
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            Bukkit.getLogger().info("Something went wrong getting the playerdata of " + player.getName());
-            player.kickPlayer("Something went wrong getting your playerdata! Try it again later.");
-        }
-
-        PlayerModel playerModel;
-
-        try {
-            playerModel = databaseModule.loadPlayer(player.getUniqueId(), player.getName()).get();
-        } catch (Exception ignored) {
-            return;
-        }
-
-        if (playerModel == null) {
-            player.kickPlayer("Something went wrong getting your playerdata! Try it again later.");
-        }
-
-        CACHED_PLAYERS.put(player.getUniqueId(), playerModel);
+    public void processSpigotLogin(Player player) {
 
         player.getInventory().clear();
 

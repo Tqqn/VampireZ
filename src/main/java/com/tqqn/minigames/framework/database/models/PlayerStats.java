@@ -37,6 +37,13 @@ public final class PlayerStats {
     }
 
     /**
+     * Empty Constructor if the stats are not there.
+     */
+    public PlayerStats() {
+        this(0, 0, 0, 0, 0, 0, 0, 0);
+    }
+
+    /**
      * Retrieves the value of the specified statistic type.
      *
      * @param statType The type of statistic to retrieve.
@@ -60,25 +67,13 @@ public final class PlayerStats {
      */
     @Getter
     public enum StatType {
-        HUMAN_KILLS(".stats.human_kills"),
-        HUMAN_WINS(".stats.human_wins"),
-        HUMAN_LOSSES(".stats.human_losses"),
-        HUMAN_DEATHS(".stats.human_deaths"),
-
-        VAMPIRE_KILLS(".stats.vampire_kills"),
-        VAMPIRE_WINS(".stats.vampire_wins"),
-        VAMPIRE_LOSSES(".stats.vampire_losses"),
-        VAMPIRE_DEATHS(".stats.vampire_deaths");
-
-        private final String configPath;
-
-        /**
-         * Constructs a new StatType object with the specified configuration path.
-         *
-         * @param path The configuration path associated with the statistic type.
-         */
-        StatType(String path) {
-            this.configPath = path;
-        }
+        HUMAN_KILLS(),
+        HUMAN_WINS(),
+        HUMAN_LOSSES(),
+        HUMAN_DEATHS(),
+        VAMPIRE_KILLS(),
+        VAMPIRE_WINS(),
+        VAMPIRE_LOSSES(),
+        VAMPIRE_DEATHS();
     }
 }
